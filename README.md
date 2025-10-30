@@ -139,7 +139,7 @@ pwd
 
 En el directorio "*results_pca/*" encontrarás dos outputs, "*.eigenval*" y "*.eigenvec*".
 
-***Transferencia de ficheros del CESGA a tu sistema local***
+###*Transferencia de ficheros del CESGA a tu sistema local*
 
 Representaremos los resultados del PCA en RStudio. Para ello necesitarás transferir los resultados del PCA a tu sistema local. También necesitarás un archivo adicional llamado poplist_human_pop_dist.txt, que contiene una lista de los individuos analizados junto con el código de su población de origen. Para transferir estos archivos puedes usar WinSCP, o alternativamente usando el comando scp desde tu máquina local: 
 
@@ -208,7 +208,7 @@ pwd
 
 En el directorio "*results_admixture/*" encontrarás tres outputs, "*.Q*", que contiene las fracciones de ascendencia, "*.P*", con las fecuencias alélicas de las poblaciones ancestrales inferidas, y "*.cv.error*" con los errores para cada valor de K.
 
-***Transferencia de ficheros del CESGA a tu sistema local***
+###*Transferencia de ficheros del CESGA a tu sistema local*
 
 De nuevo, representaremos los resultados del ADMIXTURE en RStudio. Para ello, en la terminal de tu sistema local escribe el siguiente código, cambiando previamente:
 
@@ -292,7 +292,7 @@ F<sub>ST:
 sbatch script_ calculate_fst.sh chr22_pop_finer_pruned data/poplist_human_pop_finer
 ```
 
-***Transferencia de ficheros del CESGA a tu sistema local***
+###*Transferencia de ficheros del CESGA a tu sistema local*
 
 Una vez finalizados, puedes transferir los resultados a tu sistema local para la elaboración de figuras. Recuerda cambiar:
 - *username* por tu nombre de usuario
