@@ -9,6 +9,7 @@ ADMIXTURE y STRUCTURE utilizan el mismo modelo estadístico, pero como ADMIXTURE
 
 ** FST
 
+
 ## Datos
 
 Trabajaremos con datos de la fase 3 del Proyecto 1000 Genomas (https://www.internationalgenome.org/1000-genomes-summary/). Se trata de una iniciativa internacional, desarrollada entre el 2008 y 2015 con el objetivo de crear un catálogo completo de la variación genética humana mediante la secuenciación del genoma completo de un conjunto diverso de individuos de diferentes poblaciones. Este proyecto proporciona un marco de referencia para comprender nuestra historia evolutiva, la diferenciación entre grupos y las implicaciones biomédicas de dicha variación.
