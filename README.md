@@ -7,7 +7,7 @@ El método de componentes principales, o PCA, busca identificar los principales 
 
 ADMIXTURE y STRUCTURE utilizan el mismo modelo estadístico, pero como ADMIXTURE permite analizar un mayor número de muestras y marcadores (SNPs) en menos tiempo, nos centraremos en él. ADMIXTURE utiliza el método de máxima verosimilitud para asignar individuos a K subpoblaciones ancestrales, donde el número K se especifica de antemano. En cada subpoblación (demo) se asume apareamiento aleatorio. Cada subpoblación se caracteriza por un conjunto concreto de frecuencias alélicas para cada locus, y se asume que no hay desequilibrio de ligamiento (LD) entre marcadores. Por este motivo se recomienda evitar los SNPs estrechamente ligados para garantizar que el LD que intenta minimizar el programa se deba a la estructura poblacional y no a la proximidad física de los marcadores. El modelo asigna probabilidades a cada individuo de pertenecer a cada subpoblación asumida. Un mismo individuo puede tener probabilidades mayores de cero de pertenecer a varias subpoblaciones, indicando posible mezcla o flujo genético.
 
-** FST
+Por otro lado, el F<sub>ST (Wright 1949), o distancia genética, es una de las principales medidas de diferenciación genética entre y dentro de poblaciones, originalmente definido como "*la correlación entre gametos seleccionados al azar dentro de la misma subpoblación en relación con la población total o, equivalentemente, como la desviación de las frecuencias genotípicas respecto a las expectativas de Hardy-Weinberg en relación con la población total*" (Lohmueller y Nielsen, 2021). Las estimas ofrecen información sobre la fracción de la variación en frecuencias alélicas debida a diferencias entre regiones o subpoblaciones, adscribiéndose la fracción restante a diferencias dentro ellas. Si no hay subdivisión de la población, el F<sub>ST es igual a 0. Hay múltiples herramientas que permiten calcular este parámetro. En esta práctica utilizaremos el programa *plink*.
 
 
 ## Datos
@@ -39,7 +39,10 @@ Tabla 1. Poblaciones humanas evaluadas por caso de estudio.
 |  | GIH | Gujarati | Asia meridional | 50 |			
 
 
-Tan sólo a modo informativo, los archivos VCF (Variant Call Format) de cada cromosoma, con información para el total de los 2504 individuos secuenciados y pertenecientes a 26 poblaciones diferentes, pueden descargarse desde el sitio FTP:  https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/. Desde la terminal, utilizaríamos directamente el comando wget seguido de la URL del archivo que se quiere descargar (ej. para descargar el archivo VCF completo del cromosoma 22: wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz).
+Tan sólo a modo informativo, los archivos VCF (Variant Call Format) de cada cromosoma, con información para el total de los 2504 individuos secuenciados y pertenecientes a 26 poblaciones diferentes, pueden descargarse desde el sitio FTP:  https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/. Desde la terminal, utilizaríamos directamente el comando *wget* seguido de la URL del archivo que se quiere descargar (ej. para descargar el archivo VCF completo del cromosoma 22: 
+```
+wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz)
+```
 
 
 ## Descarga de datos
@@ -49,7 +52,7 @@ Tras conectarte al CESGA, muévete al directorio de trabajo creado para esta ses
 ```
 cd $LUSTRE/MGG_GH5/STRUCTURE
 ```
-Los datos y scripts con los que trabajaremos están almacenados en este mismo repositorio, creado para esta sesión práctica. Para clonar el repositorio desde la terminal:
+Los datos y scripts con los que trabajaremos están almacenados en este mismo repositorio. Para clonar el repositorio desde la terminal:
 
 ```
 git clone https://github.com/noeliaperezp/MGG_GH5_STRUCTURE.git .
@@ -57,9 +60,9 @@ ls
 ```
 
 Verás que se han descargado una serie de archivos:
-- Scripts con extensión “*.sh*” listos para ejecutar y que incluyen cada uno de los comandos que iremos utilizando paso a paso a lo largo de la práctica.
-- Un directorio “data” que contiene los archivos de variantes (VCF) para los dos escenarios que analizaremos (“chr22_pop_dist.vcf.gz” y “chr22_pop_finer.vcf.gz”). En este directorio también encontrarás dos archivos adicionales con los identificadores de las muestras y el código de la población de origen (“poplist_human_pop_dist.txt” y “poplist_human_pop_finer.txt”).
-- Un script de R (“structure_figures.R”) con el código que utilizaremos para representar los resultados.
+- Scripts con extensión *.sh* listos para ejecutar y que incluyen cada uno de los comandos que iremos utilizando paso a paso a lo largo de la práctica.
+- Un directorio *data* que contiene los archivos de variantes (VCF) para los dos escenarios que analizaremos (*chr22_pop_dist.vcf.gz* y *chr22_pop_finer.vcf.gz*). En este directorio también encontrarás dos archivos adicionales con los identificadores de las muestras y el código de la población de origen (*poplist_human_pop_dist.txt* y *poplist_human_pop_finer.txt*).
+- Un script de R (*structure_figures.R*) con el código que utilizaremos para representar los resultados.
 - Un archivo README con el guion de prácticas para esta sesión.
 
 Ahora que tenemos todo lo necesario, empezaremos analizando la estructura poblacional en el conjunto de datos muestreados de forma discreta (**chr22_pop_dist**).
@@ -78,7 +81,7 @@ mkdir data_pruned
 cd data_pruned/
 ```
 
-Retén variantes bialélicas y genera archivos plink (.bed,.fam,.bim):
+Retén variantes bialélicas (SNPs) y genera los archivos con formato plink (.bed,.fam,.bim):
 ```
 plink2 --vcf ../data/chr22_pop_dist.vcf.gz --make-bed --max-alleles 2 --snps-only --out chr22_pop_dist.SNPs
 ```
@@ -111,9 +114,9 @@ cd ..
 pwd
 ```
 
-De aquí en adelante trabajaremos con los archivos filtrados (“*_pruned*”), que encontrarás en el directorio "*data_pruned/*". 
+De aquí en adelante trabajaremos con los archivos filtrados (*_pruned*), que encontrarás en el directorio *data_pruned/*. 
 
-¿Cuántas muestras y variantes se han eliminado y cuántos retenemos? ¿son suficientes?
+> **_PREGUNTA:_** ¿Cuántas muestras y variantes se han eliminado y cuántos retenemos? ¿son suficientes?
 
 
 ## Análisis de componentes principales (PCA)
@@ -138,15 +141,15 @@ cd ../..
 pwd 
 ```
 
-En el directorio "*results_pca/*" encontrarás dos outputs, "*.eigenval*" y "*.eigenvec*".
+En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la cantidad de varianza que cada componente principal (o eigenvector) explica en los datos, y *.eigenvec*, con los vectores que definen la dirección de los componentes principales.
 
 ### *Transferencia de ficheros del CESGA a tu sistema local*
 
-Representaremos los resultados del PCA en RStudio. Para ello necesitarás transferir los resultados del PCA a tu sistema local. También necesitarás un archivo adicional llamado poplist_human_pop_dist.txt, que contiene una lista de los individuos analizados junto con el código de su población de origen. Para transferir estos archivos puedes usar WinSCP, o alternativamente usando el comando scp desde tu máquina local: 
+Representaremos los resultados del PCA en R, y en concreto RStudio. Para ello necesitarás transferir los resultados del PCA a tu sistema local. También necesitarás un archivo adicional llamado *poplist_human_pop_dist.txt*, que contiene una lista de los individuos analizados junto con el código de su población de origen. Para transferir estos archivos puedes usar el programa WinSCP, o alternativamente usando el comando *scp* desde tu máquina local: 
 
 En tu sistema local, crea y abre la carpeta a la que quieras exportar los archivos. Haz clic con el botón derecho y abre una terminal (ej. Windows PowerShell). 
 
-Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que conduce al archivo que quieres transferir. Para ello ejecuta el comando pwd en la terminal del CESGA. Asegúrate de que te encuentras en el directorio “*…/MGG_GH5/STRUCTURE*”, punto base de la estructura de directorios que hemos creado para esta sesión práctica.  
+Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que conduce al archivo que quieres transferir. Para ello ejecuta el comando *pwd* en la terminal del CESGA. Asegúrate de que te encuentras en el directorio */MGG_GH5/STRUCTURE*, punto base de la estructura de directorios que hemos creado para esta sesión práctica.  
 
 Ahora escribe en la terminal local (ej. Windows PowerShell) los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA.
 
@@ -166,7 +169,7 @@ Una vez transferidos los resultados del PCA, abre RStudio y muévete al director
 setwd(“your/path/”)
 ```
 
-Presionando tabulador tendrás una guía de los directorios a los que te puedes mover. Una vez en la carpeta copia y ejecuta las líneas de código que encontrarás en el apartado "PCA" en el script structure_figures.R.
+Presionando tabulador tendrás una guía de los directorios a los que te puedes mover. Una vez en la carpeta copia y ejecuta las líneas de código que encontrarás en el apartado "PCA" en el script *structure_figures.R*.
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
@@ -187,7 +190,7 @@ fi
 cd results_admixture/chr22_pop_dist_pruned
 ```
 
-ADMIXTURE:
+Ejecuta el análisis con ADMIXTURE. Por lo general se suelen evaluar múltiples valores de K, desde 1 hasta el nº máximo de poblaciones que tenemos (*NPOP*), y se selecciona aquel valor K que minimiza el error (*cross-validation error (cv)*). 
 ```
 NPOP=6
 for (( K = 1; K <= $NPOP; K++ ))
@@ -196,18 +199,18 @@ do
 done
 ```
 
-Extrae el cross-validation error(CV) para cada valor de K:
+Extrae el error *cv* para cada valor de K:
 ```
 awk '/CV/ {print $3,$4}' *.out | cut -c 4,7-20 > chr22_pop_dist_pruned.admixture.cv.error
 ```
 
-Retorna al directorio principal (“$LUSTRE/MGG_GH5/STRUCTURE”):
+Retorna al directorio principal (“*$LUSTRE/MGG_GH5/STRUCTURE”):
 ```
 cd ../..
 pwd 
 ```
 
-En el directorio "*results_admixture/*" encontrarás tres outputs, "*.Q*", que contiene las fracciones de ascendencia, "*.P*", con las fecuencias alélicas de las poblaciones ancestrales inferidas, y "*.cv.error*" con los errores para cada valor de K.
+En el directorio *results_admixture/* encontrarás tres outputs, *.Q*, que contiene las fracciones de ascendencia, *.P*, con las fecuencias alélicas de las poblaciones ancestrales inferidas, y *.cv.error* con los errores para cada valor de K.
 
 ### *Transferencia de ficheros del CESGA a tu sistema local*
 
@@ -245,7 +248,7 @@ fi
 cd results_fst/chr22_pop_dist_pruned
 ```
 
-Calcula el F<sub>ST global y por marcador:
+Calcula el F<sub>ST global:
 ```
 plink --bfile ../../data_pruned/chr22_pop_dist_pruned --fst --within ../../data/ poplist_human_pop_dist.txt --out chr22_pop_dist_pruned_fst
 ```
@@ -256,7 +259,7 @@ cd ../..
 pwd 
 ```
 
-En el directorio "*results_fst/*" encontrarás un output principal, "*.fst*", que contiene las estimas por marcador, y un archivo "*.log*" que contiene el valor F<sub>ST promedio.
+En el directorio *results_fst/* encontrarás un output principal, *.fst*, que contiene las estimas por marcador, y un archivo *.log* que contiene el valor F<sub>ST promedio.
 
 > **_PREGUNTA:_** ¿Qué nivel de diferenciación genética encontramos entre las poblaciones evaluadas?
 
@@ -270,7 +273,7 @@ Filtrado de datos:
 sbatch script_data_filtering.sh chr22_pop_finer
 ```
 
-Puedes comprobar el estado de ejecución de trabajo utilizando el comando
+Puedes comprobar el estado de ejecución del trabajo utilizando el siguiente comando:
 ```
 squeue
 ```
