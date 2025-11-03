@@ -132,7 +132,7 @@ cd results_pca/chr22_pop_dist_pruned
 
 PCA:
 ```
-plink2 --bfile ../../data_pruned/ chr22_pop_dist_pruned --pca 10 –out chr22_pop_dist_pruned_pca 
+plink2 --bfile ../../data_pruned/chr22_pop_dist_pruned --pca 10 -out chr22_pop_dist_pruned_pca 
 ```
 
 Retorna al directorio principal (“$LUSTRE/MGG_GH5/STRUCTURE”):
@@ -250,7 +250,7 @@ cd results_fst/chr22_pop_dist_pruned
 
 Calcula el F<sub>ST global:
 ```
-plink --bfile ../../data_pruned/chr22_pop_dist_pruned --fst --within ../../data/ poplist_human_pop_dist.txt --out chr22_pop_dist_pruned_fst
+plink --bfile ../../data_pruned/chr22_pop_dist_pruned --fst --within ../../data/poplist_human_pop_dist.txt --out chr22_pop_dist_pruned_fst
 ```
 
 Retorna al directorio principal (“$LUSTRE/MGG_GH5/STRUCTURE”):
