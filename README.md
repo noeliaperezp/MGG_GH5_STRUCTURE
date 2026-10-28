@@ -32,7 +32,7 @@ Tabla 1. Poblaciones humanas evaluadas por caso de estudio.
 |  | GIH | Gujarati | Asia meridional | 20 |
 |  | CHB | Han Chinese | Asia Oriental | 20 |				
 |  | PEL | Peruana | América | 20 |	
-| Muestreo geográfico ‘continuo’ (chr22_pop_cont) | GBR | Británica | Europa | 50 |
+| Muestreo geográfico ‘continuo’ (chr22_pop_finer) | GBR | Británica | Europa | 50 |
 |  | IBS | Ibérica | Europa | 50 |
 |  | TSI | Toscana | Europa | 50 |			
 |  | FIN | Finlandés | Europa | 50 |			
@@ -62,12 +62,28 @@ Los archivos VCF (Variant Call Format) de cada cromosoma, con información para 
 ```
 mkdir data
 cd data/
-wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz)
+wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
+cd ../
 ```
 
 
+## Obtención de submuestras
 
+```
+mkdir data_subsamples
+cd data_subsamples/
+```
 
+Empezaremos definiendo las variables que contendrán la información de las poblaciones a retener (Tabla 1) y el número de individuos por población.
+```
+# chr22_pop_dist
+POP_DIST=("YRI" "LWK" "GBR" "GIH" "CHB" "PEL")   # código de las poblaciones de interés
+N_POP_DIST=20   # número de individuos por población
+
+# chr22_pop_dist
+POP_FINER=("IBS" "TSI" "GBR" "FIN" "GIH")
+N_POP_FINER=50
+```
 
 
 Ahora que tenemos todo lo necesario, empezaremos analizando la estructura poblacional en el conjunto de datos muestreados de forma discreta (**chr22_pop_dist**).
