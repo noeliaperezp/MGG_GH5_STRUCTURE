@@ -28,22 +28,9 @@ cd data
 
 N_POP_DIST=20 # number of individuals per population
 POP_DIST=("YRI" "LWK" "GBR" "GIH" "CHB" "PEL" ) # case scenario 'geographically distant sampling' 
- # n_pop = 6
- # YRI: Yoruba, Africa
- # LWK: Luhya, Africa
- # GBR: British, Europe 
- # GIH: Gujarati, South Asia
- # CHB: Han Chinese, East Asia
- # PEL: Peruvian, America
 
 N_POP_FINER=50 # number of individuals per population
- POP_FINER=("IBS" "TSI" "GBR" "FIN" "GIH") # case scenario 'sampling with higher spatial resolution' 
- # n_pop = 5
- # GBR: British, Europe
- # IBS: Iberian, Europe 
- # TSI: Toscani, Europe
- # FIN: Finnish, Europe
- # GIH: Gujarati, South Asia
+POP_FINER=("IBS" "TSI" "GBR" "FIN" "GIH") # case scenario 'sampling with higher spatial resolution' 
 
 # DOWNLOAD COMPRESSED VCF AND PANEL WITH IDS AND POPULATION CODES
 
@@ -85,11 +72,5 @@ bcftools index chr22_pop_dist.vcf.gz
 
 bcftools view -S human_pop_finer.ids -Oz -o chr22_pop_finer.vcf.gz ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_finer.vcf.gz
-
-
-
-
-
-
 
 
