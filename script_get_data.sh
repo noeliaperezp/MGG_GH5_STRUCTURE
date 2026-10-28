@@ -36,10 +36,14 @@ POP_FINER=("IBS" "TSI" "GBR" "FIN" "GIH") # case scenario 'sampling with higher 
 
 wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel
+cd ../
+
+mkdir data_subsamples
+cd data_subsamples/
 
 # TABLE WITH POPULATION INFORMATION
 
-awk 'NR>1{print $1"\t"$2"\t"$3}' integrated_call_samples_v3.20130502.ALL.panel > sample_pop.tsv
+awk 'NR>1{print $1"\t"$2"\t"$3}' ../data/integrated_call_samples_v3.20130502.ALL.panel > sample_pop.tsv
 
 # FUNCTION TO PICK RANDOM INDIVIDUALS
 
@@ -67,7 +71,7 @@ done
 
 # VCF SUBSET BY SAMPLES
 
-bcftools view -S human_pop_dist.ids -Oz -o chr22_pop_dist.vcf.gz ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
+bcftools view -S human_pop_dist.ids -Oz -o chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_dist.vcf.gz
 
 bcftools view -S human_pop_finer.ids -Oz -o chr22_pop_finer.vcf.gz ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
