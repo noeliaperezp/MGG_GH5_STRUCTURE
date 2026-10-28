@@ -362,7 +362,7 @@ awk -v p="$POP" '$2==p {print "0", $1}' ../data_subsamples/sample_pop.tsv > "${P
 
 Extrae la submuestra de la población FIN de los archivos en formato PLINK ya filtrados (incluido en **chr22_pop_finer**):
 ```
-plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-bed --out "chr22_${POP}"
+plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-bed --export vcf --out "chr22_${POP}"
 ```
 
 Lanza GONE2:
