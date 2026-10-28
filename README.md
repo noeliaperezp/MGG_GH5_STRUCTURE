@@ -314,55 +314,10 @@ En el directorio *results_fst/* encontrarás un output principal, *.fst*, que co
 > **_PREGUNTA:_** ¿Qué nivel de diferenciación genética encontramos entre las poblaciones evaluadas?
 
 
-## Ejecución de comandos a través de scripts
+## Análisis de la estructura poblacional en el conjunto de datos muestreados de forma 'continua' (**chr22_pop_finer**)
 
-Para analizar la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**, seguiremos los mismos pasos y lanzaremos los mismos comandos, en esta ocasión desde un script listo para ejecutarse. En el CESGA, el comando *sbatch* se utiliza para enviar trabajos (ej. ejecución de scripts) al sistema de colas. 
+Para analizar la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**), seguiremos los mismos pasos y lanzaremos los mismos comandos. Ten en cuenta que será necesario ajustar los nombres de las variables y de los archivos para ajustarse a este conjunto de datos.
 
-Filtrado de datos:
-```
-sbatch script_data_filtering.sh chr22_pop_finer
-```
-
-Puedes comprobar el estado de ejecución del trabajo utilizando el siguiente comando:
-```
-squeue
-```
-
-Una vez finalizado, lanza los siguientes scripts.
-
-PCA:
-```
-sbatch script_ run_pca.sh chr22_pop_finer_pruned
-
-```
-
-ADMIXTURE (ten en cuenta que ahora el conjunto de datos incluye muestras de 5 poblaciones diferentes):
-```
-sbatch script_ run_admixture.sh chr22_pop_finer_pruned 5
-```
-
-F<sub>ST:
-```
-sbatch script_ calculate_fst.sh chr22_pop_finer_pruned data/poplist_human_pop_finer
-```
-
-### *Transferencia de ficheros del CESGA a tu sistema local*
-
-Una vez finalizados, puedes transferir los resultados a tu sistema local para la elaboración de figuras. Recuerda cambiar:
-- *username* por tu nombre de usuario
-- */path* por la ruta que te devuelve *pwd* en el CESGA
-
-```
-# Resultados del PCA
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_pca/chr22_pop_finer_pruned/chr22_pop_finer_pruned_pca.eigenval .
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_pca/chr22_pop_finer_pruned/chr22_pop_finer_pruned_pca.eigenvec .
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/data/poplist_human_pop_finer.txt .
-
-# Resultados del ADMIXTURE
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_admixture/chr22_pop_finer_pruned/chr22_pop_finer_pruned.admixture.cv.error .
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_admixture/chr22_pop_finer_pruned/*P .
-scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_admixture/chr22_pop_finer_pruned/*Q .
-```
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
