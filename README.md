@@ -39,6 +39,9 @@ Tabla 1. Poblaciones humanas evaluadas por caso de estudio.
 |  | GIH | Gujarati | Asia meridional | 50 |			
 
 
+Empezaremos analizando la estructura poblacional en el conjunto de datos muestreados de forma discreta (**chr22_pop_dist**).
+
+
 ## Descarga de datos
 
 Tras conectarte al CESGA, muévete al directorio de trabajo creado para esta sesión práctica.
@@ -66,6 +69,10 @@ wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase
 cd ../
 ```
 
+Para descargar el panel con los identificadores de las poblaciones:
+```
+wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel
+```
 
 ## Obtención de submuestras
 
@@ -76,18 +83,40 @@ cd data_subsamples/
 
 Empezaremos definiendo las variables que contendrán la información de las poblaciones a retener (Tabla 1) y el número de individuos por población.
 ```
-# chr22_pop_dist
 POP_DIST=("YRI" "LWK" "GBR" "GIH" "CHB" "PEL")   # código de las poblaciones de interés
 N_POP_DIST=20   # número de individuos por población
-
-# chr22_pop_dist
-POP_FINER=("IBS" "TSI" "GBR" "FIN" "GIH")
-N_POP_FINER=50
 ```
 
+Haz una copia de la tabla con los identificadores de las poblaciones y listado de individuos:
+```
+awk 'NR>1{print $1"\t"$2"\t"$3}' ../data/integrated_call_samples_v3.20130502.ALL.panel > sample_pop.tsv
+```
 
-Ahora que tenemos todo lo necesario, empezaremos analizando la estructura poblacional en el conjunto de datos muestreados de forma discreta (**chr22_pop_dist**).
+Crea una función que permita seleccionar individuos al azar a partir de la información contenida en la tabla anterior:
+```
+pick_rnd_ids() {
+  local pop=$1   # id de la población
+  local n=$2     # número de individuos a seleccionar
+  awk -v p="$pop" '$2==p{print $1}' sample_pop.tsv | shuf -n "${n}"
+} 
+```
 
+Obtén la lista de individuos:
+```
+for POP in "${POP_DIST[@]}"; do
+  pick_rnd_ids "${POP}" "${N_POP_DIST}" | while read IID; do
+    echo "${IID}" >> human_pop_dist.ids
+    echo -e "0\t${IID}\t${POP}" >> poplist_human_pop_dist.txt
+  done
+done
+```
+
+Extrae de los VCF la submuestra:
+```
+module load cesga/2020 bcftools/1.19
+bcftools view -S human_pop_dist.ids -Oz -o ../data/chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
+bcftools index chr22_pop_dist.vcf.gz
+```
 
 ## Filtrado
 
