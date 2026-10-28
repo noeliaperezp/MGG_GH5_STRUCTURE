@@ -116,6 +116,7 @@ Extrae de los VCF la submuestra:
 module load cesga/2020 bcftools/1.19
 bcftools view -S human_pop_dist.ids -Oz -o chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_dist.vcf.gz
+cd ../
 ```
 
 ## Filtrado de datos
@@ -318,7 +319,7 @@ En el directorio *results_fst/* encontrarás un output principal, *.fst*, que co
 
 Siguiendo los mismos pasos, analiza la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**). Ten en cuenta que, al lanzar los comandos, deberás adaptar los nombres de las variables y de los archivos para trabajar con este conjunto de datos. 
 
-Como alternativa, puedes lanzar los scripts 'script_run_pca.sh', 'script_run_admixture.sh', y 'script_calculate_fst.sh' con el comando *sbatch*. En este caso, revisa la lista de argumentos requeridos por el script, indicados en el apartado '# Set arguments'. Puedes visualizar el script con el comando *cat* <nombre_del_script>. Una vez enviados los trabajos, puedes revisar su estado mediante el comando *squeue*.
+Como alternativa, tras obtener la submuestra, puedes lanzar los scripts 'script_data_filtering.sh','script_run_pca.sh', 'script_run_admixture.sh', y 'script_calculate_fst.sh' con el comando *sbatch*. En este caso, revisa la lista de argumentos requeridos por el script, indicados en el apartado '# Set arguments'. Puedes visualizar el script con el comando *cat* <nombre_del_script>. Una vez enviados los trabajos, puedes revisar su estado mediante el comando *squeue*.
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
@@ -331,12 +332,12 @@ Como alternativa, puedes lanzar los scripts 'script_run_pca.sh', 'script_run_adm
 
 Estimaremos el censo efectivo de la historia reciente de una población humana de referencia (FIN, filandesa), utilizando el modelo basado en desequilibrio de ligamiento (LD) entre pares de SNPs implementado en el programa GONE2. 
 
-El método se basa en la idea de que, en una población finita, la deriva genética genera LD en cada generación, en una cantidad aproximadamente proporcional a 1/*N<sub>e*. La recombinación lo destruye, a una velocidad determinada por la tasa de recombinación (*c*) entre los dos loci, de modo que los loci poco ligados reflejan la deriva reciente y los muy ligados la de un periodo más largo. El programa calcula la contribución de cada generación pasada al LD actual y busca, mediante un algoritmo genético, la serie de *N<sub>e* que mejor reproduce el LD observado a todas las distancias genéticas.
-
+Fundamento del método: cada nueva mutación genera un pequeño LD entre la mutación y otros sitios polimórficos. Este LD aumenta por deriva genética en cada generación, en una cantidad aproximadamente proporcional a 1/*N<sub>e*, mientras que la recombinación lo destruye, más rápido cuanto mayor es la distancia genética entre los loci. Por tanto, el LD entre loci distantes refleja principalmente la deriva reciente y los muy ligados la de un periodo más largo. El programa calcula la contribución de cada generación pasada al LD actual y busca la trayectoria de *N<sub>e* histórico que mejor reproduce el LD observado a todas las distancias genéticas (Santiago et al., 2020. *Mol. Biol. Evol.*).
 
 
 Clona el repositorio de github de GONE2: 
 ```
+pwd    # asegúrate de que te encuentras en STRUCTURE/
 git clone https://github.com/esrud/GONE2
 ```
 
@@ -344,6 +345,24 @@ Compila el programa:
 ```
 cd GONE2
 make gone
+cd ../
+```
+
+Crea un nuevo directorio y guarda el código de la población en una variable:
+```
+mkdir effective_size
+cd effective_size/
+POP="FIN"
+```
+
+Extrae los identificadores de las muestras FIN:
+```
+awk -v p="$POP" '$2==p {print "0", $1}' ../data_subsamples/sample_pop.tsv > "${POP}.ids"
+```
+
+Extrae la submuestra de la población FIN de los archivos en formato PLINK ya filtrados (incluido en **chr22_pop_finer**):
+```
+plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-bed --out "chr22_${POP}"
 ```
 
 
