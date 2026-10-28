@@ -314,14 +314,38 @@ En el directorio *results_fst/* encontrarás un output principal, *.fst*, que co
 > **_PREGUNTA:_** ¿Qué nivel de diferenciación genética encontramos entre las poblaciones evaluadas?
 
 
-## Análisis de la estructura poblacional en el conjunto de datos muestreados de forma 'continua' (**chr22_pop_finer**)
+## (TAREA) Análisis de la estructura poblacional en el conjunto de datos muestreados de forma 'continua' (**chr22_pop_finer**)
 
-Para analizar la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**), seguiremos los mismos pasos y lanzaremos los mismos comandos. Ten en cuenta que será necesario ajustar los nombres de las variables y de los archivos para ajustarse a este conjunto de datos.
+Siguiendo los mismos pasos, analiza la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**). Ten en cuenta que, al lanzar los comandos, deberás adaptar los nombres de las variables y de los archivos para trabajar con este conjunto de datos. 
 
+Como alternativa, puedes lanzar los scripts 'script_run_pca.sh', 'script_run_admixture.sh', y 'script_calculate_fst.sh' con el comando *sbatch*. En este caso, revisa la lista de argumentos requeridos por el script, indicados en el apartado '# Set arguments'. Puedes visualizar el script con el comando *cat* <nombre_del_script>. Una vez enviados los trabajos, puedes revisar su estado mediante el comando *squeue*.
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
 > **_PREGUNTA:_** ¿Qué conclusiones se sacan del ADMIXTURE?
 
 > **_PREGUNTA:_** ¿Qué nivel de diferenciación genética encontramos ahora entre las poblaciones evaluadas?
+
+
+# MGG GH5 - ESTIMACIÓN DEL CENSO EFECTIVO
+
+Estimaremos el censo efectivo de la historia reciente de una población humana de referencia (FIN, filandesa), utilizando el modelo basado en desequilibrio de ligamiento (LD) entre pares de SNPs implementado en el programa GONE2. 
+
+El método se basa en la idea de que, en una población finita, la deriva genética genera LD en cada generación, en una cantidad aproximadamente proporcional a 1/*N<sub>e*. La recombinación lo destruye, a una velocidad determinada por la tasa de recombinación (*c*) entre los dos loci, de modo que los loci poco ligados reflejan la deriva reciente y los muy ligados la de un periodo más largo. El programa calcula la contribución de cada generación pasada al LD actual y busca, mediante un algoritmo genético, la serie de *N<sub>e* que mejor reproduce el LD observado a todas las distancias genéticas.
+
+
+
+Clona el repositorio de github de GONE2: 
+```
+git clone https://github.com/esrud/GONE2
+```
+
+Compila el programa:
+```
+cd GONE2
+make gone
+```
+
+
+
 
