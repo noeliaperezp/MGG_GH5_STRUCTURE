@@ -36,7 +36,7 @@ cd data_pruned
 ### DATA FILTERING ################
 
 # Get plink files ('*.bed','*.fam','*.bim') keeping only biallelic variants (SNPs)
-plink2 --vcf $WDIR/data/$DATASET.vcf.gz --make-bed --max-alleles 2 --snps-only --out $DATASET.SNPs
+plink2 --vcf $WDIR/data_subsamples/$DATASET.vcf.gz --make-bed --max-alleles 2 --snps-only --out $DATASET.SNPs
 
 # Assign chromosome-and-position-based IDs to unnamed variants
 plink2 --bfile $DATASET.SNPs --set-missing-var-ids @:# --make-bed --out $DATASET.SNPid
@@ -44,15 +44,14 @@ rm $DATASET.SNPs*
 
 # Filter out variants/samples with more than 10 percent missing calls (--geno/--mind)
 # Filter out variants with a minimum allele frequency < 0.05 (--maf)
-plink2 --bfile $DATASET.SNPid --geno 0.1 --mind 0.1 --maf 0.05 --make-bed --out $DATASET.filtered
+plink2 --bfile $DATASET.SNPid --geno 0.1 --mind 0.1 --maf 0.05 --make-bed --out ${DATASET}_pruned
 rm $DATASET.SNPid*
 
 # Prune data for linkage disequilibrium
-plink2 --bfile $DATASET.filtered --indep-pairwise 50 5 0.9 --out $DATASET.plink2
-plink2 --bfile $DATASET.filtered --extract $DATASET.plink2.prune.in --make-bed --out ${DATASET}_pruned
-rm $DATASET.filtered*
+plink2 --bfile ${DATASET}_pruned --indep-pairwise 50 5 0.9 --out ${DATASET}_filtLD.plink2
+plink2 --bfile ${DATASET}_pruned --extract ${DATASET}_filtLD.plink2.prune.in --make-bed --out ${DATASET}_pruned_LD
+rm ${DATASET}_filtLD*
 rm *.in
-rm *.out
 rm *.log
 
 
