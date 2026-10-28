@@ -20,7 +20,7 @@ En el transcurso de la práctica trabajaremos principalmente con dos conjuntos d
 2.	Poblaciones humanas con muestreo geográfico ‘continuo’ o con mayor resolución espacial.
    
 Encontrarás información completa sobre las poblaciones y muestras que cuentan con datos disponibles en el portal de datos del IGSR (“The International Genome Sample Resource”, https://www.internationalgenome.org/data-portal/population). El IGSR se estableció con el fin de garantizar el acceso y uso de los datos del Proyecto 1000 Genomas, actualizar los recursos con el ensamblaje de referencia actual, y ampliar el conjunto de datos con nuevos datos procedentes de las muestras del Proyecto 1000 Genomas y de nuevas poblaciones.
-Debido a que disponemos de un tiempo limitado, partiremos de una muestra de 20 o 50 individuos ya seleccionados previamente de forma aleatoria por población (Tabla 1), y nos limitaremos a las variantes genéticas localizadas en el cromosoma 22.  
+Debido a que disponemos de un tiempo limitado, utilizaremos una muestra de 20 o 50 individuos seleccionados de forma aleatoria por población (Tabla 1), y nos limitaremos a las variantes genéticas localizadas en el cromosoma 22.  
 
 Tabla 1. Poblaciones humanas evaluadas por caso de estudio.
 
@@ -39,12 +39,6 @@ Tabla 1. Poblaciones humanas evaluadas por caso de estudio.
 |  | GIH | Gujarati | Asia meridional | 50 |			
 
 
-Tan sólo a modo informativo, los archivos VCF (Variant Call Format) de cada cromosoma, con información para el total de los 2504 individuos secuenciados y pertenecientes a 26 poblaciones diferentes, pueden descargarse desde el sitio FTP:  https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/. Desde la terminal, utilizaríamos directamente el comando *wget* seguido de la URL del archivo que se quiere descargar (ej. para descargar el archivo VCF completo del cromosoma 22: 
-```
-wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz)
-```
-
-
 ## Descarga de datos
 
 Tras conectarte al CESGA, muévete al directorio de trabajo creado para esta sesión práctica.
@@ -52,7 +46,7 @@ Tras conectarte al CESGA, muévete al directorio de trabajo creado para esta ses
 ```
 cd $LUSTRE/MGG_GH5/STRUCTURE
 ```
-Los datos y scripts con los que trabajaremos están almacenados en este mismo repositorio. Para clonar el repositorio desde la terminal:
+Los scripts con los que trabajaremos están almacenados en este mismo repositorio. Para clonar el repositorio desde la terminal:
 
 ```
 git clone https://github.com/noeliaperezp/MGG_GH5_STRUCTURE.git .
@@ -61,9 +55,20 @@ ls
 
 Verás que se han descargado una serie de archivos:
 - Scripts con extensión *.sh* listos para ejecutar y que incluyen cada uno de los comandos que iremos utilizando paso a paso a lo largo de la práctica.
-- Un directorio *data* que contiene los archivos de variantes (VCF) para los dos escenarios que analizaremos (*chr22_pop_dist.vcf.gz* y *chr22_pop_finer.vcf.gz*). En este directorio también encontrarás dos archivos adicionales con los identificadores de las muestras y el código de la población de origen (*poplist_human_pop_dist.txt* y *poplist_human_pop_finer.txt*).
 - Un script de R (*structure_figures.R*) con el código que utilizaremos para representar los resultados.
 - Un archivo README con el guion de prácticas para esta sesión.
+
+Los archivos VCF (Variant Call Format) de cada cromosoma, con información para el total de los 2504 individuos secuenciados y pertenecientes a 26 poblaciones diferentes, pueden descargarse desde el sitio FTP:  https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/. Desde la terminal, utilizaremos directamente el comando *wget* seguido de la URL del archivo que se quiere descargar. Para descargar el archivo VCF completo del cromosoma 22: 
+```
+mkdir data
+cd data/
+wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz)
+```
+
+
+
+
+
 
 Ahora que tenemos todo lo necesario, empezaremos analizando la estructura poblacional en el conjunto de datos muestreados de forma discreta (**chr22_pop_dist**).
 
