@@ -365,6 +365,8 @@ Extrae la submuestra de la población FIN de los archivos en formato PLINK ya fi
 plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-bed --out "chr22_${POP}"
 ```
 
-
-
+Lanza GONE2:
+```
+sbatch script_run_GONE2.sh chr22_FIN
+```
 
