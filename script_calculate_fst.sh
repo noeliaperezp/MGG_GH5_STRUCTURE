@@ -35,7 +35,7 @@ cd results_fst/$DATASET
 
 ### FST ###########################
 
-plink --bfile $WDIR/data_pruned/$DATASET --fst --within $WDIR/$POPLIST.txt --out ${DATASET}_fst
+plink --bfile $WDIR/data_pruned/$DATASET --fst --within $WDIR/data_subsamples/$POPLIST.txt --out ${DATASET}_fst
 
 # Outputs
 # *.fst
