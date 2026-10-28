@@ -74,7 +74,7 @@ done
 bcftools view -S human_pop_dist.ids -Oz -o chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_dist.vcf.gz
 
-bcftools view -S human_pop_finer.ids -Oz -o chr22_pop_finer.vcf.gz ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
+bcftools view -S human_pop_finer.ids -Oz -o chr22_pop_finer.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_finer.vcf.gz
 
 
