@@ -6,7 +6,7 @@
 #SBATCH -J get_data
 #SBATCH -o get_data_%j.o 
 #SBATCH -e get_data_%j.e
-#SBATCH -t 00:20:00 # execution time
+#SBATCH -t 00:10:00 # execution time
 #SBATCH --mem=16GB # memory needed
 #SBATCH -c 4
 
