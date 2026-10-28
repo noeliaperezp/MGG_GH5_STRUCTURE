@@ -66,12 +66,12 @@ Los archivos VCF (Variant Call Format) de cada cromosoma, con información para 
 mkdir data
 cd data/
 wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
-cd ../
 ```
 
 Para descargar el panel con los identificadores de las poblaciones:
 ```
 wget https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel
+cd ../
 ```
 
 ## Obtención de submuestras
@@ -114,11 +114,11 @@ done
 Extrae de los VCF la submuestra:
 ```
 module load cesga/2020 bcftools/1.19
-bcftools view -S human_pop_dist.ids -Oz -o ../data/chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
+bcftools view -S human_pop_dist.ids -Oz -o chr22_pop_dist.vcf.gz ../data/ALL.chr22.phase3_shapeit2_mvncall_integrated_v5b.20130502.genotypes.vcf.gz
 bcftools index chr22_pop_dist.vcf.gz
 ```
 
-## Filtrado
+## Filtrado de datos
 
 Carga los módulos necesarios:
 ```
@@ -133,7 +133,7 @@ cd data_pruned/
 
 Retén variantes bialélicas (SNPs) y genera los archivos con formato plink (.bed,.fam,.bim):
 ```
-plink2 --vcf ../data/chr22_pop_dist.vcf.gz --make-bed --max-alleles 2 --snps-only --out chr22_pop_dist.SNPs
+plink2 --vcf ../data_subsamples/chr22_pop_dist.vcf.gz --make-bed --max-alleles 2 --snps-only --out chr22_pop_dist.SNPs
 ```
 
 Asigna nuevos identificadores a variantes sin nombre:
@@ -144,17 +144,17 @@ rm chr22_pop_dist.SNPs*
 
 Filtra variantes y muestras con >10% missing calls y maf < 0.05:
 ```
-plink2 --bfile chr22_pop_dist.SNPid --geno 0.1 --mind 0.1 --maf 0.05 --make-bed --out chr22_pop_dist.filtered
+plink2 --bfile chr22_pop_dist.SNPid --geno 0.1 --mind 0.1 --maf 0.05 --make-bed --out chr22_pop_dist_pruned
 rm chr22_pop_dist.SNPid*
 ```
 
 Filtra variantes con fuerte desequilibrio de ligamiento (LD):
 ```
-plink2 --bfile chr22_pop_dist.filtered --indep-pairwise 50 5 0.9 --out chr22_pop_dist.plink2
-plink2 --bfile chr22_pop_dist.filtered --extract chr22_pop_dist.plink2.prune.in --make-bed --out chr22_pop_dist_pruned
-rm chr22_pop_dist.filtered*
+# NOTA: como algunos análisis se basan precisamente en el LD, crearemos una copia.
+plink2 --bfile chr22_pop_dist_pruned --indep-pairwise 50 5 0.9 --out chr22_pop_dist_filtLD.plink2
+plink2 --bfile chr22_pop_dist_pruned --extract chr22_pop_dist_filtLD.plink2.prune.in --make-bed --out chr22_pop_dist_pruned_LD
+rm chr22_pop_dist_filtLD*
 rm *.in
-rm *.out
 rm *.log
 ```
 
@@ -164,7 +164,7 @@ cd ..
 pwd
 ```
 
-De aquí en adelante trabajaremos con los archivos filtrados (*_pruned*), que encontrarás en el directorio *data_pruned/*. 
+De aquí en adelante trabajaremos con los archivos filtrados (*_pruned_LD*), que encontrarás en el directorio *data_pruned/*. 
 
 > **_PREGUNTA:_** ¿Cuántas muestras y variantes se han eliminado y cuántos retenemos? ¿son suficientes?
 
@@ -173,16 +173,16 @@ De aquí en adelante trabajaremos con los archivos filtrados (*_pruned*), que en
 
 Crea un nuevo directorio y muévete a él:
 ```
-if [ ! -d results_pca/chr22_pop_dist_pruned ] 
+if [ ! -d results_pca/chr22_pop_dist_pruned_LD ] 
 then 
- mkdir -p results_pca/chr22_pop_dist_pruned
+ mkdir -p results_pca/chr22_pop_dist_pruned_LD
 fi
-cd results_pca/chr22_pop_dist_pruned
+cd results_pca/chr22_pop_dist_pruned_LD
 ```
 
 PCA:
 ```
-plink2 --bfile ../../data_pruned/chr22_pop_dist_pruned --pca 10 -out chr22_pop_dist_pruned_pca 
+plink2 --bfile ../../data_pruned/chr22_pop_dist_pruned_LD --pca 10 -out chr22_pop_dist_pruned_LD_pca 
 ```
 
 Retorna al directorio principal (“$LUSTRE/MGG_GH5/STRUCTURE”):
@@ -191,7 +191,7 @@ cd ../..
 pwd 
 ```
 
-En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la cantidad de varianza que cada componente principal (o eigenvector) explica en los datos, y *.eigenvec*, con los vectores que definen la dirección de los componentes principales.
+En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la cantidad de varianza que explica cada componente principal (o eigenvector) en los datos, y *.eigenvec*, con los vectores que definen la dirección de los componentes principales.
 
 ### *Transferencia de ficheros del CESGA a tu sistema local*
 
@@ -203,7 +203,7 @@ Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que con
 
 Ahora escribe en la terminal local (ej. Windows PowerShell) los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA.
 
-Una vez copiado en siguiente código recuerda cambiar:
+Antes de copiar el siguiente código, recuerda cambiar:
 - *username* por tu nombre de usuario
 - */path* por la ruta que te devuelve *pwd* en el CESGA
 
@@ -233,19 +233,19 @@ module load cesga/2020 admixture/1.3.0
 
 Crea un nuevo directorio y muévete a él:
 ```
-if [ ! -d results_admixture/chr22_pop_dist_pruned ] 
+if [ ! -d results_admixture/chr22_pop_dist_pruned_LD ] 
 then 
- mkdir -p results_admixture/chr22_pop_dist_pruned
+ mkdir -p results_admixture/chr22_pop_dist_pruned_LD
 fi
-cd results_admixture/chr22_pop_dist_pruned
+cd results_admixture/chr22_pop_dist_pruned_LD
 ```
 
 Ejecuta el análisis con ADMIXTURE. Por lo general se suelen evaluar múltiples valores de K, desde 1 hasta el nº máximo de poblaciones que tenemos (*NPOP*), y se selecciona aquel valor K que minimiza el error (*cross-validation error (cv)*). 
 ```
-NPOP=6
+NPOP=6   # cambiar en función de las poblaciones que se estén analizando
 for (( K = 1; K <= $NPOP; K++ ))
 do
-  admixture --cv ../data_pruned/chr22_pop_dist_pruned.bed $K | tee chr22_pop_dist_pruned_admixture_K${K}.out
+  admixture --cv ../../data_pruned/chr22_pop_dist_pruned_LD.bed $K | tee chr22_pop_dist_pruned_admixture_K${K}.out
 done
 ```
 
@@ -291,16 +291,16 @@ module load cesga/2020 plink/1.9b5
 
 Crea un nuevo directorio y muévete a él:
 ```
-if [ ! -d results_fst/chr22_pop_dist_pruned ] 
+if [ ! -d results_fst/chr22_pop_dist_pruned_LD ] 
 then 
- mkdir -p results_fst/chr22_pop_dist_pruned
+ mkdir -p results_fst/chr22_pop_dist_pruned_LD
 fi
-cd results_fst/chr22_pop_dist_pruned
+cd results_fst/chr22_pop_dist_pruned_LD
 ```
 
 Calcula el F<sub>ST global:
 ```
-plink --bfile ../../data_pruned/chr22_pop_dist_pruned --fst --within ../../data/poplist_human_pop_dist.txt --out chr22_pop_dist_pruned_fst
+plink --bfile ../../data_pruned/chr22_pop_dist_pruned_LD --fst --within ../../data_subsamples/poplist_human_pop_dist.txt --out chr22_pop_dist_pruned_fst
 ```
 
 Retorna al directorio principal (“$LUSTRE/MGG_GH5/STRUCTURE”):
