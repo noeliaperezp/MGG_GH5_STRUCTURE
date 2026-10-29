@@ -212,14 +212,7 @@ scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/results_pca/chr22_pop_dist
 scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/data/poplist_human_pop_dist.txt .
 ```
 
-Una vez transferidos los resultados del PCA, abre RStudio y muévete al directorio que has creado con los resultados. Para cambiar de directorio utiliza el comando 
-
-```
-# R
-setwd(“your/path/”)
-```
-
-Presionando tabulador tendrás una guía de los directorios a los que te puedes mover. Una vez en la carpeta copia y ejecuta las líneas de código que encontrarás en el apartado "PCA" en el script *structure_figures.R*.
+Una vez transferidos los resultados del PCA, abre RStudio y muévete al directorio que has creado con los resultados. Para cambiar de directorio utiliza el comando *setwd(“your/path/”)*. Presionando tabulador tendrás una guía de los directorios a los que te puedes mover. Una vez en la carpeta copia y ejecuta las líneas de código que encontrarás en el apartado "PCA" en el script *structure_figures.R*.
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
