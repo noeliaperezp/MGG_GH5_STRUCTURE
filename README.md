@@ -196,13 +196,13 @@ En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la ca
 
 ### *Transferencia de ficheros del CESGA a tu sistema local*
 
-Representaremos los resultados del PCA en R, y en concreto RStudio. Para ello necesitarás transferir los resultados del PCA a tu sistema local. También necesitarás un archivo adicional llamado *poplist_human_pop_dist.txt*, que contiene una lista de los individuos analizados junto con el código de su población de origen. Para transferir estos archivos puedes usar el programa WinSCP, o alternativamente usando el comando *scp* desde tu máquina local: 
+Representaremos los resultados del PCA en R, y en concreto RStudio. Para ello necesitarás transferir los resultados del PCA a tu sistema local. También necesitarás un archivo adicional llamado *poplist_human_pop_dist.txt*, que contiene una lista de los individuos analizados junto con el código de su población de origen. Para transferir estos archivos puedes usar el programa WinSCP o similares, o alternativamente usando el comando *scp* desde tu máquina local: 
 
 En tu sistema local, crea y abre la carpeta a la que quieras exportar los archivos. Haz clic con el botón derecho y abre una terminal (ej. Windows PowerShell). 
 
-Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que conduce al archivo que quieres transferir. Para ello ejecuta el comando *pwd* en la terminal del CESGA. Asegúrate de que te encuentras en el directorio */MGG_GH5/STRUCTURE*, punto base de la estructura de directorios que hemos creado para esta sesión práctica.  
+Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que conduce al archivo que quieres transferir. Para ello ejecuta el comando *pwd* en la terminal del CESGA. Asegúrate de que te encuentras en el directorio */MGG_GH5/STRUCTURE*.  
 
-Ahora escribe en la terminal local (ej. Windows PowerShell) los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA.
+Ahora escribe en la terminal local los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA.
 
 Antes de copiar el siguiente código, recuerda cambiar:
 - *username* por tu nombre de usuario
@@ -217,6 +217,7 @@ scp -o MACs=hmac-sha2-512 username@ft3.cesga.es:/path/data/poplist_human_pop_dis
 Una vez transferidos los resultados del PCA, abre RStudio y muévete al directorio que has creado con los resultados. Para cambiar de directorio utiliza el comando 
 
 ```
+# R
 setwd(“your/path/”)
 ```
 
