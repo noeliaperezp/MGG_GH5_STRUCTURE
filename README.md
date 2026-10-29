@@ -367,6 +367,6 @@ plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-
 
 Lanza GONE2:
 ```
-sbatch script_run_GONE2.sh chr22_FIN.vcf
+sbatch ../script_run_GONE2.sh chr22_FIN.vcf
 ```
 
