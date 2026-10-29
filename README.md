@@ -233,7 +233,7 @@ fi
 cd results_admixture/chr22_pop_dist_pruned_LD
 ```
 
-Ejecuta el análisis con ADMIXTURE. Por lo general se suelen evaluar múltiples valores de K, desde 1 hasta el nº máximo de poblaciones que tenemos (*NPOP*), y se selecciona aquel valor K que minimiza el error (*cross-validation error (cv)*). 
+Ejecuta el análisis con ADMIXTURE. Por lo general se suelen evaluar múltiples valores de K, desde 1 hasta el nº máximo de poblaciones que tenemos (*NPOP*), y se selecciona aquel valor K que minimiza el error (*cross-validation error*, *cv*). 
 ```
 NPOP=6   # cambiar en función de las poblaciones que se estén analizando
 for (( K = 1; K <= $NPOP; K++ ))
