@@ -326,6 +326,7 @@ Estimaremos el censo efectivo de la historia reciente de una población humana d
 
 Fundamento del método: cada nueva mutación genera un pequeño LD entre la mutación y otros sitios polimórficos. Este LD aumenta por deriva genética en cada generación, en una cantidad aproximadamente proporcional a 1/*N<sub>e*, mientras que la recombinación lo destruye, más rápido cuanto mayor es la distancia genética entre los loci. Por tanto, el LD entre loci distantes refleja principalmente la deriva reciente y los muy ligados la de un periodo más largo. El programa calcula la contribución de cada generación pasada al LD actual y busca la trayectoria de *N<sub>e* histórico que mejor reproduce el LD observado a todas las distancias genéticas (Santiago et al., 2020. *Mol. Biol. Evol.*).
 
+Por cuestiones de tiempo, trabajaremos directamente con los datos que ya tenemos filtrados para la población FIN (tened en mente que esto supone realizar el análisis con datos muy limitados - 1 cromosoma y pocas variantes - a modo ). 
 
 Clona el repositorio de github de GONE2: 
 ```
@@ -346,18 +347,6 @@ mkdir effective_size
 cd effective_size/
 ```
 
-Descarga el archivo de variantes VCF correspondiente a la población FIN:
-```
-wget https://github.com/noeliaperezp/MGG_GH5_STRUCTURE/blob/main/data_FIN/FIN_pruned
-```
-
-Lanza GONE2:
-```
-sbatch ../script_run_GONE2.sh chr22_FIN.vcf
-```
-
-
--------------
 Extrae los identificadores de las muestras FIN:
 ```
 awk -v p="FIN" '$2==p {print "0", $1}' ../data_subsamples/sample_pop.tsv > "FIN.ids"
