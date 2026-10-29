@@ -202,9 +202,7 @@ En tu sistema local, crea y abre la carpeta a la que quieras exportar los archiv
 
 Ten en cuenta que necesitarás conocer la ruta completa dentro del CESGA que conduce al archivo que quieres transferir. Para ello ejecuta el comando *pwd* en la terminal del CESGA. Asegúrate de que te encuentras en el directorio */MGG_GH5/STRUCTURE*.  
 
-Ahora escribe en la terminal local los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA.
-
-Antes de copiar el siguiente código, recuerda cambiar:
+Ahora escribe en la terminal local los siguientes comandos. Te pedirá confirmar la autenticidad del host, y a continuación tu contraseña de usuario en el CESGA. Antes de copiar el siguiente código, recuerda cambiar:
 - *username* por tu nombre de usuario
 - */path* por la ruta que te devuelve *pwd* en el CESGA
 
