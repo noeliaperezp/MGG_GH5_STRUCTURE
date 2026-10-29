@@ -192,7 +192,7 @@ cd ../..
 pwd 
 ```
 
-En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la cantidad de varianza que explica cada componente principal (o eigenvector) en los datos, y *.eigenvec*, con los vectores que definen la dirección de los componentes principales.
+En el directorio *results_pca/* encontrarás dos outputs, *.eigenval*, con la cantidad de varianza que explica cada componente principal en los datos, y *.eigenvec*, con los vectores que definen la dirección de los componentes principales.
 
 ### *Transferencia de ficheros del CESGA a tu sistema local*
 
