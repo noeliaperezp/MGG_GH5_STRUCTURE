@@ -1,5 +1,5 @@
 
-# MGG GH5 - ANÁLISIS DE ESTRUCTURA POBLACIONAL 
+# ANÁLISIS DE ESTRUCTURA POBLACIONAL 
 
 El estudio de la estructura de una población ofrece información valiosa sobre su historia y origen. En esta sesión práctica analizaremos la estructura y el flujo génico de poblaciones humanas utilizando herramientas estadísticas muy comunes en genética de poblaciones, como los análisis de componentes principales (PCA) y los modelos de mezcla (ej., ADMIXTURE o STRUCTURE).
 
