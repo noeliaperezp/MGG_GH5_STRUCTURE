@@ -326,7 +326,7 @@ Estimaremos el censo efectivo de la historia reciente de una población humana d
 
 Fundamento del método: cada nueva mutación genera un pequeño LD entre la mutación y otros sitios polimórficos. Este LD aumenta por deriva genética en cada generación, en una cantidad aproximadamente proporcional a 1/*N<sub>e*, mientras que la recombinación lo destruye, más rápido cuanto mayor es la distancia genética entre los loci. Por tanto, el LD entre loci distantes refleja principalmente la deriva reciente y los muy ligados la de un periodo más largo. El programa calcula la contribución de cada generación pasada al LD actual y busca la trayectoria de *N<sub>e* histórico que mejor reproduce el LD observado a todas las distancias genéticas (Santiago et al., 2020. *Mol. Biol. Evol.*).
 
-Por cuestiones de tiempo, trabajaremos directamente con los datos que ya tenemos filtrados para la población FIN (tened en mente que esto supone realizar el análisis con datos muy limitados - 1 cromosoma y pocas variantes - a modo ). 
+Por cuestiones de tiempo, trabajaremos directamente con los datos que ya tenemos filtrados para la población FIN (tened en mente que esto supone realizar el análisis con datos muy limitados - 1 cromosoma y pocas variantes - a modo demostrativo). 
 
 Clona el repositorio de github de GONE2: 
 ```
