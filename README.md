@@ -352,17 +352,28 @@ Crea un nuevo directorio y guarda el código de la población en una variable:
 ```
 mkdir effective_size
 cd effective_size/
-POP="FIN"
 ```
 
+Descarga el archivo de variantes VCF correspondiente a la población FIN:
+```
+wget https://github.com/noeliaperezp/MGG_GH5_STRUCTURE/blob/main/data_FIN/FIN_pruned
+```
+
+Lanza GONE2:
+```
+sbatch ../script_run_GONE2.sh chr22_FIN.vcf
+```
+
+
+-------------
 Extrae los identificadores de las muestras FIN:
 ```
-awk -v p="$POP" '$2==p {print "0", $1}' ../data_subsamples/sample_pop.tsv > "${POP}.ids"
+awk -v p="FIN" '$2==p {print "0", $1}' ../data_subsamples/sample_pop.tsv > "FIN.ids"
 ```
 
 Extrae la submuestra de la población FIN de los archivos en formato PLINK ya filtrados (incluido en **chr22_pop_finer**):
 ```
-plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "${POP}.ids" --make-bed --export vcf --out "chr22_${POP}"
+plink2 --bfile ../data_pruned/chr22_pop_finer_pruned --keep "FIN.ids" --make-bed --export vcf --out "chr22_FIN"
 ```
 
 Lanza GONE2:
