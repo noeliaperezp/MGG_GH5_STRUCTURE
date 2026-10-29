@@ -1,5 +1,5 @@
 
-# ANÁLISIS DE ESTRUCTURA POBLACIONAL 
+# MGG GH5 - ANÁLISIS DE ESTRUCTURA POBLACIONAL 
 
 El estudio de la estructura de una población ofrece información valiosa sobre su historia y origen. En esta sesión práctica analizaremos la estructura y el flujo génico de poblaciones humanas utilizando herramientas estadísticas muy comunes en genética de poblaciones, como los análisis de componentes principales (PCA) y los modelos de mezcla (ej., ADMIXTURE o STRUCTURE).
 
@@ -328,7 +328,7 @@ Como alternativa, tras obtener la submuestra, puedes lanzar los scripts 'script_
 > **_PREGUNTA:_** ¿Qué nivel de diferenciación genética encontramos ahora entre las poblaciones evaluadas?
 
 
-# MGG GH5 - ESTIMACIÓN DEL CENSO EFECTIVO
+# ESTIMACIÓN DEL CENSO EFECTIVO
 
 Estimaremos el censo efectivo de la historia reciente de una población humana de referencia (FIN, filandesa), utilizando el modelo basado en desequilibrio de ligamiento (LD) entre pares de SNPs implementado en el programa GONE2. 
 
