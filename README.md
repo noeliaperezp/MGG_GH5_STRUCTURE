@@ -355,6 +355,8 @@ Compila el programa:
 cd GONE2
 make gone
 cd ../
+
+wget https://github.com/noeliaperezp/MGG_GH5_STRUCTURE/blob/main/script_run_GONE2.sh
 ```
 
 Crea un nuevo directorio y guarda el código de la población en una variable:
