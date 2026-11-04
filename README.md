@@ -311,7 +311,20 @@ En el directorio *results_fst/* encontrarás un output principal, *.fst*, que co
 
 Siguiendo los mismos pasos, analiza la estructura poblacional del conjunto de datos muestreados de forma 'continua', o con mayor resolución espacial (**chr22_pop_finer**). Ten en cuenta que, al lanzar los comandos, deberás adaptar los nombres de las variables y de los archivos para trabajar con este conjunto de datos. 
 
-Como alternativa, tras obtener la submuestra, puedes lanzar los scripts 'script_data_filtering.sh','script_run_pca.sh', 'script_run_admixture.sh', y 'script_calculate_fst.sh' con el comando *sbatch*. En este caso, revisa la lista de argumentos requeridos por el script, indicados en el apartado '# Set arguments'. Puedes visualizar el script con el comando *cat* <nombre_del_script>. Una vez enviados los trabajos, puedes revisar su estado mediante el comando *squeue*.
+Como alternativa, tras obtener la submuestra, puedes lanzar los scripts 'script_get_subsamples_finer.sh', 'script_data_filtering.sh','script_run_pca.sh', 'script_run_admixture.sh', y 'script_calculate_fst.sh' con el comando *sbatch*. En este caso, revisa la lista de argumentos requeridos por el script, indicados en el apartado '# Set arguments'. Puedes visualizar el script con el comando *cat* <nombre_del_script>. Una vez enviados los trabajos, puedes revisar su estado mediante el comando *squeue*.
+```
+sbatch script_get_subsamples_finer.sh
+```
+
+```
+sbatch script_data_filtering.sh chr22_pop_finer
+```
+
+```
+sbatch script_run_pca.sh chr22_pop_finer_pruned
+sbatch script_run_admixture.sh chr22_pop_finer_pruned 5
+sbatch script_calculate_fst.sh chr22_pop_finer_pruned poplist_human_pop_finer
+```
 
 > **_PREGUNTA:_** ¿Qué porcentaje de la varianza es explicada por PC1 y PC2 juntos? ¿Qué separa cada PC?
 
